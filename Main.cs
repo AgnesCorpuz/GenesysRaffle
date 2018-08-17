@@ -58,7 +58,7 @@ namespace Text_Raffle
         {
             entries = new List<string>();
 
-            if (txtSource.Text.Contains("csv"))
+            if (txtSource.Text.Contains("csv") || txtSource.Text.Contains("txt"))
             {
                 StreamReader reader = new StreamReader(txtSource.Text);
                 string line = "";
