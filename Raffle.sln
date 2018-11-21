@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raffle", "Raffle.csproj", "{0319DDF5-703B-4133-85A8-5F5E997CE6F3}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "..\Installer\Installer.vdproj", "{2E939578-7FF0-40E1-97C5-C839094A1D39}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -15,6 +17,8 @@ Global
 		{0319DDF5-703B-4133-85A8-5F5E997CE6F3}.Debug|x86.Build.0 = Debug|x86
 		{0319DDF5-703B-4133-85A8-5F5E997CE6F3}.Release|x86.ActiveCfg = Release|x86
 		{0319DDF5-703B-4133-85A8-5F5E997CE6F3}.Release|x86.Build.0 = Release|x86
+		{2E939578-7FF0-40E1-97C5-C839094A1D39}.Debug|x86.ActiveCfg = Debug
+		{2E939578-7FF0-40E1-97C5-C839094A1D39}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

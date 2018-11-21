@@ -1,44 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.IO;
-using System.Threading;
 using Text_Raffle.Properties;
-using System.Collections.Specialized;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Runtime.InteropServices;
+using System.Media;
 
 namespace Text_Raffle
 {
     public partial class frmMain : Form
     {
-        #region Global Variables
-
         private List<string> entries, won;
-        private bool pause = false, jrun = false;
+        private bool jrun = false;
         private Random randomizer = new Random();
         private object syncL = new object();
+        SoundPlayer ding = new SoundPlayer(Application.StartupPath + "\\sounds\\ding.wav");
+        SoundPlayer cheer = new SoundPlayer(Application.StartupPath + "\\sounds\\cheer.wav");
 
-        #endregion
-
-        #region Class / Custom Methods
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="frmMain"/> class.
-        /// </summary>
         public frmMain()
         {
             InitializeComponent();
         }
 
-        /// <summary>
-        /// Method for prompting won entries.
-        /// </summary>
+        // Method for prompting won entries.
         private void queryMark()
         {
             if (jrun)
@@ -51,9 +38,7 @@ namespace Text_Raffle
             }
         }
 
-        /// <summary>
-        /// Loads a file to a list.
-        /// </summary>
+        // Loads a file to a list.
         private void loadFile()
         {
             entries = new List<string>();
@@ -108,16 +93,12 @@ namespace Text_Raffle
                 Marshal.ReleaseComObject(xlApp);
             }
 
-
             lblNumEntries.Text = entries.Count.ToString();
+            btnStart.Enabled = true;
+            btnStart.Visible = true;
         }
 
-        /// <summary>
-        /// Better random number generator
-        /// </summary>
-        /// <param name="min">Starting value.</param>
-        /// <param name="max">Maximum value.</param>
-        /// <returns>Random number</returns>
+        // Random number generator
         public int randomNumber(int min, int max)
         {
             lock (syncL)
@@ -126,16 +107,8 @@ namespace Text_Raffle
             }
         }
 
-        #endregion
-
-        #region Control Event Methods
-
-        /// <summary>
-        /// Handles the Load event of the frmMain control.
-        /// Turns the window into full screen, loads the saved settings, and initializes the main lists.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        // Handles the Load event of the frmMain control.
+        // Turns the window into full screen, loads the saved settings, and initializes the main lists.
         private void frmMain_Load(object sender, EventArgs e)
         {
             this.Bounds = Screen.PrimaryScreen.Bounds;
@@ -145,25 +118,18 @@ namespace Text_Raffle
                 won = new List<string>(((string)Settings.Default["Won"]).Split('|'));
             }
             entries = new List<string>();
+
+            btnStart.Enabled = false;
+            btnStart.Visible = false;
         }
 
-        /// <summary>
-        /// Handles the Click event of the btnExit control.
-        /// Exits the application.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        // Handles the Click event of the btnExit control. Exits the application.
         private void btnExit_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-        /// <summary>
-        /// Handles the Click event of the btnStart control.
-        /// Start and pause button. Triggers the two timers used.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        // Handles the Click event of the btnStart control.
         private void btnStart_Click(object sender, EventArgs e)
         {
             queryMark();
@@ -171,27 +137,12 @@ namespace Text_Raffle
             {
                 return;
             }
-            if (!pause)
-            {
-                tmMain.Interval = 10;
-                tmMain.Enabled = true;
-                btnStart.Image = Text_Raffle.Properties.Resources.pause_03;
-                pause = true;
-            }
-            else
-            {
-                tmCtrl.Enabled = true;
-                btnStart.Image = Text_Raffle.Properties.Resources.start_032;
-                pause = false;
-            }
+
+            tmMain.Interval = 10;
+            tmMain.Enabled = true;
         }
 
-        /// <summary>
-        /// Handles the Click event of the btnSource control.
-        /// Triggers the Open File Dialog, and executes the loadFile method.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        // Triggers the Open File Dialog, and executes the loadFile method.
         private void btnSource_Click(object sender, EventArgs e)
         {
             ofd.Filter = "Excel files (*.xlsx)|*.xlsx|CSV files (*.csv)| *.csv|Text files (*.txt)| *.txt";
@@ -206,12 +157,7 @@ namespace Text_Raffle
             loadFile();
         }
 
-        /// <summary>
-        /// Handles the Tick event of the tmMain control.
-        /// Main timer that randomizes the names.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        // Main timer that randomizes the names.
         private void tmMain_Tick(object sender, EventArgs e)
         {
             string entry = "";
@@ -222,46 +168,53 @@ namespace Text_Raffle
             }
             lblWinner.Text = entry;
             lblWinner.ForeColor = Color.Red;
-        }
+            ding.Play();
 
-        /// <summary>
-        /// Handles the Tick event of the tmCtrl control.
-        /// Stopping timer, gradually slows (increases interval) randomizing.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private void tmCtrl_Tick(object sender, EventArgs e)
-        {
-            tmMain.Interval += 40;
-            if (tmMain.Interval >= 400)
+            tmMain.Interval += 20;
+            if (tmMain.Interval >= 550)
             {
-                lblWinner.ForeColor = Color.Green;
-                tmMain.Enabled = false;
-                tmCtrl.Enabled = false;
-                jrun = true;                
+                tmCtrl.Enabled = true;
             }
         }
 
-        /// <summary>
-        /// Handles the FormClosing event of the frmMain control.
-        /// Saves the settings before closing.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.FormClosingEventArgs"/> instance containing the event data.</param>
+        // Stopping timer, gradually slows (increases interval) randomizing.
+        private void tmCtrl_Tick(object sender, EventArgs e)
+        {
+            cheer.Play();
+
+            lblWinner.ForeColor = Color.Green;
+            tmMain.Enabled = false;
+            tmCtrl.Enabled = false;
+            jrun = true;
+        }
+
+        // Handles the FormClosing event of the frmMain control. Saves the settings before closing.
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             queryMark();
-            //MessageBox.Show(String.Join("|", won.ToArray()));
             Settings.Default["Won"] = String.Join("|", won.ToArray());
             Settings.Default.Save();
         }
 
-        /// <summary>
-        /// Handles the LinkClicked event of the llView control.
-        /// Opens up the won entry list.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.LinkLabelLinkClickedEventArgs"/> instance containing the event data.</param>
+        private void btnStart_Paint(object sender, PaintEventArgs e)
+        {
+            ControlPaint.DrawBorder(e.Graphics, btnStart.ClientRectangle,
+                SystemColors.ControlLightLight, 5, ButtonBorderStyle.Outset,
+                SystemColors.ControlLightLight, 5, ButtonBorderStyle.Outset,
+                SystemColors.ControlLightLight, 5, ButtonBorderStyle.Outset,
+                SystemColors.ControlLightLight, 5, ButtonBorderStyle.Outset);
+        }
+
+        private void gbSource_Paint(object sender, PaintEventArgs e)
+        {
+            ControlPaint.DrawBorder(e.Graphics, gbSource.ClientRectangle,
+                SystemColors.ControlLightLight, 5, ButtonBorderStyle.Outset,
+                SystemColors.ControlLightLight, 0, ButtonBorderStyle.Outset,
+                SystemColors.ControlLightLight, 5, ButtonBorderStyle.Outset,
+                SystemColors.ControlLightLight, 5, ButtonBorderStyle.Outset);
+        }
+
+        // Opens up the won entry list.
         private void llView_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             queryMark();
@@ -271,7 +224,5 @@ namespace Text_Raffle
             won = new List<string>();
             won = wonFrm.updateList();
         }
-
-        #endregion
     }
 }

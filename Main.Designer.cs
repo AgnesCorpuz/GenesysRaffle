@@ -53,12 +53,14 @@
             this.gbSource.Controls.Add(this.lblEntries);
             this.gbSource.Controls.Add(this.btnSource);
             this.gbSource.Controls.Add(this.txtSource);
-            this.gbSource.Location = new System.Drawing.Point(337, 540);
+            this.gbSource.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.gbSource.Location = new System.Drawing.Point(373, 454);
             this.gbSource.Name = "gbSource";
             this.gbSource.Size = new System.Drawing.Size(441, 85);
             this.gbSource.TabIndex = 0;
             this.gbSource.TabStop = false;
             this.gbSource.Text = "Source List";
+            this.gbSource.Paint += new System.Windows.Forms.PaintEventHandler(this.gbSource_Paint);
             // 
             // llView
             // 
@@ -119,14 +121,16 @@
             // lblWinner
             // 
             this.lblWinner.AutoEllipsis = true;
+            this.lblWinner.BackColor = System.Drawing.Color.White;
             this.lblWinner.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblWinner.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.lblWinner.Font = new System.Drawing.Font("Consolas", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblWinner.Font = new System.Drawing.Font("Consolas", 50F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblWinner.Image = ((System.Drawing.Image)(resources.GetObject("lblWinner.Image")));
             this.lblWinner.Location = new System.Drawing.Point(0, 0);
             this.lblWinner.Name = "lblWinner";
-            this.lblWinner.Size = new System.Drawing.Size(1090, 664);
+            this.lblWinner.Size = new System.Drawing.Size(1162, 578);
             this.lblWinner.TabIndex = 3;
-            this.lblWinner.Text = "--";
+            this.lblWinner.Text = "Are you ready?";
             this.lblWinner.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tmMain
@@ -142,16 +146,18 @@
             // btnExit
             // 
             this.btnExit.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.btnExit.Enabled = false;
             this.btnExit.FlatAppearance.BorderSize = 0;
             this.btnExit.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
             this.btnExit.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExit.Image = global::Text_Raffle.Properties.Resources.exit_03;
-            this.btnExit.Location = new System.Drawing.Point(784, 545);
+            this.btnExit.Location = new System.Drawing.Point(820, 454);
             this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(80, 80);
+            this.btnExit.Size = new System.Drawing.Size(80, 85);
             this.btnExit.TabIndex = 2;
             this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.Visible = false;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
             // btnStart
@@ -159,30 +165,33 @@
             this.btnStart.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.btnStart.FlatAppearance.BorderSize = 0;
             this.btnStart.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.btnStart.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.btnStart.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlLight;
             this.btnStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStart.Image = global::Text_Raffle.Properties.Resources.start_032;
-            this.btnStart.Location = new System.Drawing.Point(264, 545);
+            this.btnStart.Location = new System.Drawing.Point(287, 454);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(80, 80);
+            this.btnStart.Size = new System.Drawing.Size(80, 85);
             this.btnStart.TabIndex = 2;
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            this.btnStart.Paint += new System.Windows.Forms.PaintEventHandler(this.btnStart_Paint);
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1090, 664);
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(1162, 578);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.gbSource);
             this.Controls.Add(this.lblWinner);
+            this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmMain";
+            this.Text = "Year End Raffle 2018";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.Load += new System.EventHandler(this.frmMain_Load);
