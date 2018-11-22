@@ -11,26 +11,15 @@ namespace Text_Raffle
 {
     public partial class frmWon : Form
     {
-        #region Global Variables
-
         List<string> won;
 
-        #endregion
-
-        #region Class / Custom Methods
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="frmWon"/> class.
-        /// </summary>
+        // Initializes a new instance of the <see cref="frmWon"/> class.
         public frmWon()
         {
             InitializeComponent();
         }
 
-        /// <summary>
-        /// Called from the parent form.
-        /// </summary>
-        /// <returns>Updated list of won entries</returns>
+        // Updated list of won entries
         public List<string> updateList()
         {
             won = new List<string>();
@@ -41,10 +30,7 @@ namespace Text_Raffle
             return won;
         }
 
-        /// <summary>
-        /// Loads the list from the parent form to the listbox.
-        /// </summary>
-        /// <param name="won">Won entries in the parent form</param>
+        // Loads the list from the parent form to the listbox.
         public void loadList(List<string> won)
         {
             foreach (string entry in won)
@@ -53,16 +39,7 @@ namespace Text_Raffle
             }
         }
 
-        #endregion
-
-        #region Control Event Methods
-
-        /// <summary>
-        /// Handles the Click event of the btnDel control.
-        /// Removes an entry from the list.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        // Removes an entry from the list.
         private void btnDel_Click(object sender, EventArgs e)
         {
             if (lbWon.SelectedItems.Count > 0)
@@ -71,12 +48,7 @@ namespace Text_Raffle
             }
         }
 
-        /// <summary>
-        /// Handles the Click event of the btnAdd control.
-        /// Adds an entry to the list.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        // Adds an entry to the list.
         private void btnAdd_Click(object sender, EventArgs e)
         {
             frmAddWon awFrm = new frmAddWon();
@@ -87,7 +59,5 @@ namespace Text_Raffle
                 lbWon.Items.Add(toAdd);
             }
         }
-
-        #endregion
     }
 }

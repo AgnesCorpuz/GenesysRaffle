@@ -11,27 +11,16 @@ namespace Text_Raffle
 {
     public partial class frmAddWon : Form
     {
-        #region Global Variables
-
         public string inp = "";
         private bool but = false;
 
-        #endregion
-
-        #region Class / Custom Methods
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="frmAddWon"/> class.
-        /// </summary>
+        // Initializes a new instance of the <see cref="frmAddWon"/> class.
         public frmAddWon()
         {
             InitializeComponent();
         }
 
-        /// <summary>
-        /// Returns the input from the variable inp to the parent form.
-        /// </summary>
-        /// <returns>Input string</returns>
+        // Returns the input from the variable inp to the parent form.
         public string getInput()
         {
             if (!but)
@@ -40,23 +29,12 @@ namespace Text_Raffle
                 return inp;
         }
 
-        #endregion
-
-        #region Control Event Methods
-
-        /// <summary>
-        /// Handles the Click event of the btnAdd control.
-        /// Adds the input to the won entry list, and closes the form.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        // Adds the input to the won entry list, and closes the form.
         private void btnAdd_Click(object sender, EventArgs e)
         {
             inp = txtAdd.Text;
             but = true;
             this.Hide();
         }
-
-        #endregion
     }
 }
